@@ -1,0 +1,3 @@
+As a rider I want to have something to browse through so I won't be bored while riding the bus.
+As a developer I want to create a shopping experience for the riders of the bus that will ease the boredom of riding the bus.
+As a buisness owner I want to have a website that can reveal which items will sell the best and provide me a way to cut cost by not manufacturing too much of any product that the customers are not that fond of.
