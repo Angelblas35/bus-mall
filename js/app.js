@@ -1,52 +1,114 @@
 'use strict';
 
 var allItems = [];
+// var votes = [];
+// var title = [];
+
+var container = document.getElementById('image-container');
+var left = document.getElementById('left');
+var center = document.getElementById('center');
+var right = document.getElementById('right');
+var itemList = document.getElementById('itemlist');
 
 
-
-function Item(name, filepath) {
+function Item(name, votes, timeShown) {
   this.name = name;
-  this.filepath = filepath;
+  this.votes = votes || 0;
+  this.timeShown = timeShown || 0;
+  this.filepath = `img/${name}.jpg`;
   allItems.push(this);
 }
 
-new Item('bag', 'img/bag.jpg');
-new Item('banana', 'img/banana.jpg');
-new Item('bathroom', 'img/bathroom.jpg');
-new Item('boots', 'img/boots.jpg');
-new Item('breakfast', 'img/breakfast.jpg');
-new Item('bubblegum', 'img/bubblegum.jpg');
-new Item('chair', 'img/chair.jpg');
-new Item('cthulhu', 'img/cthulhu.jpg');
-new Item('dog-duck', 'img/dog-duck.jpg');
-new Item('dragon', 'img/dragon.jpg');
-new Item('pen', 'img/pen.jpg');
-new Item('pet-sweep', 'img/pet-sweep.jpg');
-new Item('scissors', 'img/scissors.jpg');
-new Item('shark', 'img/shark.jpg');
-new Item('sweep', 'img/sweep.jpg');
-new Item('tauntaun', 'img(/tauntaun.jpg');
-new Item('unicorn', 'img/unicorn.jpg');
-new Item('usb', 'img/usb.jpg');
-new Item('water-can', 'img/watercan.jpg');
-new Item('wine-glass', 'img/wine-glass.jpg');
+var allProducts = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthuluhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water', 'wine-glass'];
 
 
-var itemImage = document.getElementById('item-pic');
 
-function randomItem() {
-  var idx = Math.floor(Math.random() * allItems.length);
 
-  itemImage.src = allItems[idx].filepath;
-  itemImage.alt = allItems[idx].name;
-  itemImage.title = allItems[idx].name;
+// allProducts.forEach (function (productItem){
+//   new Item (productItem);
+// });
 
-  allItems[idx].views++;
+for (var i = 0; i < allProducts.length; i++) {
+  new Item(allProducts[i]);
 }
 
-randomItem();
+var userClickes = 0;
+function endClicks() {
+  if (userClickes === 25) {
+    container.removeEventListener('click', handleClick);
+  }
+}
 
-itemImage.addEventListener('click', randomItem);
+// endClicks();
 
+// function makeRandom() {
+//   return Math.floor(Math.random() * allItems.length);
+// }
+
+var output = [];
+function makeThreeUnique() {
+  var firstNum =  Math.floor(Math.random() * allItems.length);
+ 
+  output.push(firstNum);
+  left.src = allItems[firstNum].filepath;
+  left.title = allItems[firstNum].name;
+  allItems[firstNum].timeShown++;
+
+  var secondNum = Math.floor(Math.random() * allItems.length);
+  while (output.includes(secondNum)) {
+    secondNum = Math.floor(Math.random() * allItems.length);
+  }
+  output.push(secondNum);
+  center.src = allItems[secondNum].filepath;
+  center.title = allItems[secondNum].name;
+  allItems[secondNum].timeShown++;
+
+  var thirdNum = Math.floor(Math.random() * allItems.length);
+  while (output.includes(thirdNum)) {
+    thirdNum = Math.floor(Math.random() * allItems.length);
+  }
+  output.push(thirdNum);
+  right.src = allItems[thirdNum].filepath;
+  right.title = allItems[thirdNum].name;
+  allItems[thirdNum].timeShown++;
+
+
+  if (output.length > 6) {
+    output.slice(0, 3);
+  }
+  userClickes++;
+  endClicks();
+}
+
+
+makeThreeUnique();
+
+
+function handleClick(event) {
+  if (event.target.alt === 'image-container') {
+    return alert('Please click on an image');
+  }
+
+
+
+  for (var i = 0; i < allItems.length; i++)
+    if (event.target.alt === allItems[i].name) {
+      allItems[i].votes++;
+    }
+
+}
+
+container.addEventListener('click', handleClick);
+
+function showlist() {
+  for (var i = 0; i < allItems.length; i++) {
+    var liEl = document.createElement('li');
+    liEl.textContent = `${allItems[i].name} has ${allItems[i].views}
+    and ${allItems[i].votes} votes`;
+    itemList.appendChild(liEl);
+  }
+}
+
+showlist();
 
 
