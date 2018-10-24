@@ -24,13 +24,13 @@ var allProducts = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum
 
 
 
-// allProducts.forEach (function (productItem){
-//   new Item (productItem);
-// });
+allProducts.forEach (function (productItem){
+  new Item (productItem);
+});
 
-for (var i = 0; i < allProducts.length; i++) {
-  new Item(allProducts[i]);
-}
+// for (var i = 0; i < allProducts.length; i++) {
+//   new Item(allProducts[i]);
+// }
 
 var userClickes = 0;
 function endClicks() {
@@ -47,8 +47,8 @@ function endClicks() {
 
 var output = [];
 function makeThreeUnique() {
-  var firstNum =  Math.floor(Math.random() * allItems.length);
- 
+  var firstNum = Math.floor(Math.random() * allItems.length);
+
   output.push(firstNum);
   left.src = allItems[firstNum].filepath;
   left.title = allItems[firstNum].name;
@@ -90,12 +90,11 @@ function handleClick(event) {
   }
 
 
-
   for (var i = 0; i < allItems.length; i++)
     if (event.target.alt === allItems[i].name) {
       allItems[i].votes++;
     }
-
+  makeThreeUnique();
 }
 
 container.addEventListener('click', handleClick);
