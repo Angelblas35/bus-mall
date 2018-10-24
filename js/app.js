@@ -34,7 +34,9 @@ allProducts.forEach (function (productItem){
 
 var userClickes = 0;
 function endClicks() {
+  //is game over
   if (userClickes === 25) {
+    // showlist();
     container.removeEventListener('click', handleClick);
   }
 }
@@ -52,6 +54,7 @@ function makeThreeUnique() {
   output.push(firstNum);
   left.src = allItems[firstNum].filepath;
   left.title = allItems[firstNum].name;
+  right.alt = allItems[firstNum].name;
   allItems[firstNum].timeShown++;
 
   var secondNum = Math.floor(Math.random() * allItems.length);
@@ -61,6 +64,7 @@ function makeThreeUnique() {
   output.push(secondNum);
   center.src = allItems[secondNum].filepath;
   center.title = allItems[secondNum].name;
+  right.alt = allItems[secondNum].name;
   allItems[secondNum].timeShown++;
 
   var thirdNum = Math.floor(Math.random() * allItems.length);
@@ -70,18 +74,19 @@ function makeThreeUnique() {
   output.push(thirdNum);
   right.src = allItems[thirdNum].filepath;
   right.title = allItems[thirdNum].name;
+  right.alt = allItems[thirdNum].name;
   allItems[thirdNum].timeShown++;
 
 
   if (output.length > 6) {
     output.slice(0, 3);
   }
-  userClickes++;
+
   endClicks();
 }
 
 
-makeThreeUnique();
+
 
 
 function handleClick(event) {
@@ -90,14 +95,18 @@ function handleClick(event) {
   }
 
 
-  for (var i = 0; i < allItems.length; i++)
+
+
+  for (var i = 0; i < allItems.length; i++) {
     if (event.target.alt === allItems[i].name) {
       allItems[i].votes++;
     }
+  }
   makeThreeUnique();
+  userClickes++;
 }
 
-container.addEventListener('click', handleClick);
+
 
 function showlist() {
   for (var i = 0; i < allItems.length; i++) {
@@ -107,7 +116,11 @@ function showlist() {
     itemList.appendChild(liEl);
   }
 }
-
 showlist();
+
+container.addEventListener('click', handleClick);
+makeThreeUnique();
+
+
 
 
