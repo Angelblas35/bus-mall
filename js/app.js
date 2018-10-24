@@ -32,14 +32,24 @@ allProducts.forEach (function (productItem){
 //   new Item(allProducts[i]);
 // }
 
+
+
 var userClickes = 0;
 function endClicks() {
   //is game over
   if (userClickes === 25) {
     // showlist();
+    console.log('game is over')
     container.removeEventListener('click', handleClick);
+    // build votes array
+    // render chart or list
+    showlist();
+
   }
 }
+
+
+
 
 // endClicks();
 
@@ -50,11 +60,11 @@ function endClicks() {
 var output = [];
 function makeThreeUnique() {
   var firstNum = Math.floor(Math.random() * allItems.length);
-
+  console.log(output)
   output.push(firstNum);
   left.src = allItems[firstNum].filepath;
   left.title = allItems[firstNum].name;
-  right.alt = allItems[firstNum].name;
+  left.alt = allItems[firstNum].name;
   allItems[firstNum].timeShown++;
 
   var secondNum = Math.floor(Math.random() * allItems.length);
@@ -64,7 +74,7 @@ function makeThreeUnique() {
   output.push(secondNum);
   center.src = allItems[secondNum].filepath;
   center.title = allItems[secondNum].name;
-  right.alt = allItems[secondNum].name;
+  center.alt = allItems[secondNum].name;
   allItems[secondNum].timeShown++;
 
   var thirdNum = Math.floor(Math.random() * allItems.length);
@@ -78,8 +88,8 @@ function makeThreeUnique() {
   allItems[thirdNum].timeShown++;
 
 
-  if (output.length > 6) {
-    output.slice(0, 3);
+  if (output.length > 6) {    
+    output = output.slice(0, 3);
   }
 
   endClicks();
@@ -96,9 +106,9 @@ function handleClick(event) {
 
 
 
-
+  console.log(event.target.alt)
   for (var i = 0; i < allItems.length; i++) {
-    if (event.target.alt === allItems[i].name) {
+    if (event.target.title === allItems[i].name) {
       allItems[i].votes++;
     }
   }
@@ -116,7 +126,7 @@ function showlist() {
     itemList.appendChild(liEl);
   }
 }
-showlist();
+
 
 container.addEventListener('click', handleClick);
 makeThreeUnique();
