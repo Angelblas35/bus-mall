@@ -1,4 +1,5 @@
 'use strict';
+//placeholder for local storage for loop
 
 var allItems = [];
 var votes = [];
