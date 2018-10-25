@@ -1,8 +1,8 @@
 'use strict';
 
 var allItems = [];
-// var votes = [];
-// var title = [];
+var votes = [];
+
 
 var container = document.getElementById('image-container');
 var left = document.getElementById('left');
@@ -11,22 +11,24 @@ var right = document.getElementById('right');
 var itemList = document.getElementById('itemlist');
 
 
-function Item(name, votes, timeShown) {
+function Item(name) {
   this.name = name;
   this.votes = votes || 0;
-  this.timeShown = timeShown || 0;
+  // this.timeShown = timeShown || 0;
   this.filepath = `img/${name}.jpg`;
   allItems.push(this);
 }
 
-var allProducts = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthuluhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water', 'wine-glass'];
+var allProducts = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
 
 
 
-allProducts.forEach (function (productItem){
-  new Item (productItem);
-});
+allProducts.forEach (
+  function (productItem){
+    new Item (productItem);
+  }
+);
 
 // for (var i = 0; i < allProducts.length; i++) {
 //   new Item(allProducts[i]);
@@ -39,28 +41,20 @@ function endClicks() {
   //is game over
   if (userClickes === 25) {
     // showlist();
-    console.log('game is over')
+    console.log('game is over');
     container.removeEventListener('click', handleClick);
     // build votes array
     // render chart or list
-    showlist();
+    drawChart();
 
   }
 }
 
 
-
-
-// endClicks();
-
-// function makeRandom() {
-//   return Math.floor(Math.random() * allItems.length);
-// }
-
 var output = [];
 function makeThreeUnique() {
   var firstNum = Math.floor(Math.random() * allItems.length);
-  console.log(output)
+  console.log(output);
   output.push(firstNum);
   left.src = allItems[firstNum].filepath;
   left.title = allItems[firstNum].name;
@@ -88,7 +82,7 @@ function makeThreeUnique() {
   allItems[thirdNum].timeShown++;
 
 
-  if (output.length > 6) {    
+  if (output.length > 6) {
     output = output.slice(0, 3);
   }
 
@@ -106,10 +100,11 @@ function handleClick(event) {
 
 
 
-  console.log(event.target.alt)
+  // console.log(event.target.alt);
   for (var i = 0; i < allItems.length; i++) {
     if (event.target.title === allItems[i].name) {
       allItems[i].votes++;
+      
     }
   }
   makeThreeUnique();
@@ -118,19 +113,96 @@ function handleClick(event) {
 
 
 
-function showlist() {
+function showChart() {
   for (var i = 0; i < allItems.length; i++) {
     var liEl = document.createElement('li');
-    liEl.textContent = `${allItems[i].name} has ${allItems[i].views}
+    liEl.textContent = `${allItems[i].name} has ${allItems[i].timeShown}
     and ${allItems[i].votes} votes`;
     itemList.appendChild(liEl);
   }
 }
 
-
 container.addEventListener('click', handleClick);
 makeThreeUnique();
 
+
+
+var busChart;
+var chartDrawn = false;
+
+
+var titles = [];
+function updateChartArrays() {
+  for (var i = 0; i < allItems.length; i++) {
+    titles[i] = allItems[i].name;
+    votes[i] = allItems[i].votes;
+  }
+}
+
+
+
+var data = {
+  labels: allProducts, // titles array we declared earlier
+  datasets: [
+    {
+      data: votes, // votes array we declared earlier
+      backgroundColor: [
+        'bisque',
+        'darkgray',
+        'burlywood',
+        'darkgreen',
+        'navy'
+      ],
+      hoverBackgroundColor: [
+        'grey',
+        'grey',
+        'grey',
+        'grey',
+        'grey'
+      ],
+    }],
+};
+
+function drawChart() {
+  updateChartArrays();
+  var ctx = document.getElementById('bus-chart').getContext('2d');
+  busChart = new Chart(ctx,{
+    type: 'bar',
+    data: data,
+    options: {
+      legend: {
+        labels: {
+          fontColor: 'darkgreen',
+          fontSize: 18,
+        },
+      },
+      responsive: false,
+      animation: {
+        duration: 1000,
+        easing: 'easeOutBounce',
+      },
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          max: 10,
+          min: 0,
+          stepSize: 1.0,
+        },
+      }],
+    },
+  });
+  chartDrawn = true;
+}
+
+function hideChart() {
+  document.getElementById('bar-chart').hidden = true;
+}
+
+
+if (chartDrawn) {
+  busChart.update();
+}
 
 
 
