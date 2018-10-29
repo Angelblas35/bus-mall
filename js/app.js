@@ -148,11 +148,27 @@ var data = {
     {
       data: votes, // votes array we declared earlier
       backgroundColor: [
-        'bisque',
+        'green',
         'darkgray',
         'burlywood',
         'darkgreen',
-        'navy'
+        'navy',
+        'darkred',
+        'purple',
+        'black',
+        'brown',
+        'darkblue',
+        'brightgreen',
+        'red',
+        'yellow',
+        'darkpurple',
+        'lightgreen',
+        'maroon',
+        'darkyellow',
+        'lightgrey',
+        'tan',
+        'darkorange'
+
       ],
       hoverBackgroundColor: [
         'grey',
